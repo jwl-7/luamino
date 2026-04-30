@@ -41,7 +41,7 @@ print("Average: " .. avg)
 
 #### 🧹 After
 ```lua
-local function calculateAverage(a)local b=0;local c=0;for d,e in ipairs(a)do if type(e)=='number'then b=b+e;c=c+1 end end;if c==0 then return nil end;return b/c end;local a={85,92,78,'invalid',88};local b=calculateAverage(a);print("Average: "..b)
+local function a(b)local c=0;local d=0;for e,f in ipairs(b)do if type(f)=='number'then c=c+f;d=d+1 end end;if d==0 then return nil end;return c/d end;local a={85,92,78,'invalid',88};local b=calculateAverage(a);print("Average: "..b)
 ```
 
 ## 📦 Install
