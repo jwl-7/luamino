@@ -75,7 +75,15 @@ const PRESERVED_GLOBALS = [
     'unpack',
     'load',
     'loadfile',
-    'dofile'
+    'dofile',
+    'io',
+    'os',
+    'debug',
+    'coroutine',
+    'package',
+    'bit',
+    'ffi',
+    'jit'
 ]
 
 // operator precedence (higher = tighter binding)
@@ -210,20 +218,22 @@ function joinStatements(a: string, b: string, separator?: string): string {
     return a + b
 }
 
-// main minifier class
 class Minifier {
     private globalScope: Scope
     private scopeStack: Scope[]
+    private labelMaps: Map<string, string>[]
 
     constructor(globals: Array<{ name: string }> = []) {
         this.globalScope = new Scope()
         for (const g of globals) this.globalScope.reserveName(g.name)
         for (const name of PRESERVED_GLOBALS) this.globalScope.reserveName(name)
         this.scopeStack = []
+        this.labelMaps = []
     }
 
     minify(ast: AST): string {
         this.scopeStack = [this.globalScope]
+        this.labelMaps = [new Map()]
         return this.walkStatements(ast.body)
     }
 
@@ -232,6 +242,30 @@ class Minifier {
     private currentScope(): Scope {
         if (!this.scopeStack[0]) throw new Error('no scope active')
         return this.scopeStack[0]
+    }
+
+    private enterFunction(): void {
+        this.labelMaps.push(new Map())
+    }
+
+    private exitFunction(): void {
+        this.labelMaps.pop()
+    }
+
+    private getLabelName(originalName: string): string {
+        const labelMap = this.labelMaps[this.labelMaps.length - 1]
+        if (!labelMap) throw new Error('no label map active')
+        if (labelMap.has(originalName)) {
+            return labelMap.get(originalName)!
+        }
+
+        const gen = generateShortId()
+        let newName: string
+        do { newName = gen() } while (this.currentScope().usedNames.has(newName))
+
+        this.currentScope().usedNames.add(newName)
+        labelMap.set(originalName, newName)
+        return newName
     }
 
     private formatBase(base: ASTNode): string {
@@ -322,6 +356,7 @@ class Minifier {
                 return rep
 
             case 'FunctionDeclaration':
+                this.enterFunction()
                 this.enterScope()
                 const prefix = stmt.isLocal ? 'local ' : ''
                 const funcName = stmt.isLocal
@@ -336,6 +371,7 @@ class Minifier {
                 f = joinStatements(f, this.walkStatements(stmt.body))
                 f = joinStatements(f, 'end')
                 this.exitScope()
+                this.exitFunction()
                 return f
 
             case 'ForGenericStatement':
@@ -365,10 +401,10 @@ class Minifier {
                 return fn
 
             case 'LabelStatement':
-                return `::${stmt.label.name}::`
+                return `::${this.getLabelName(stmt.label.name)}::`
 
             case 'GotoStatement':
-                return `goto ${stmt.label.name}`
+                return `goto ${this.getLabelName(stmt.label.name)}`
 
             default:
                 return ''
@@ -447,6 +483,7 @@ class Minifier {
                 return this.formatBase(expr.base) + expr.indexer + expr.identifier.name
 
             case 'FunctionDeclaration':
+                this.enterFunction()
                 this.enterScope()
                 const fparams: string[] = []
                 for (const p of expr.parameters) {
@@ -455,6 +492,7 @@ class Minifier {
                 }
                 let fbody = this.walkStatements(expr.body)
                 this.exitScope()
+                this.exitFunction()
                 let func = `function(${fparams.join(',')})`
                 func = joinStatements(func, fbody)
                 func = joinStatements(func, 'end')
