@@ -1,1 +1,1 @@
-local a=42;local b="hello";local function c(d,e)local f=d+e;return f end;local c=calculate(a,10);print(c)
+local a=42;local b="hello";local function c(c,d)local e=c+d;return e end;local d=c(a,10);print(d)

@@ -92,7 +92,7 @@ if x == 2 then goto repeat_start end  -- skip printing 2
 print(x)
 if x < 3 then goto repeat_start end
 
--- Function returning a closure
+---Function returning a closure
 ---@param n number
 ---@return function
 function makeMultiplier(n)
@@ -184,7 +184,7 @@ end
 
 processNumbers({1, 2, 3, 4, 5, 6, 7, 8, 9, 10})
 
--- Vararg function
+---Vararg function
 ---@vararg any
 ---@return nil
 function variadic(...)
@@ -195,6 +195,13 @@ function variadic(...)
 end
 
 variadic(10, 20, 30)
+
+-- function with multiple returns
+local function testMultiple()
+    return 1, 2, 3
+end
+local p, q, r = testMultiple()
+print(p, q, r)
 
 -- Metatable with __add operator
 local mt = {

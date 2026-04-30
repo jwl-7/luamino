@@ -1,0 +1,1 @@
+local function a(a,b,c)return a,b,c end;local b,c,d=a(1,2,3);print(b,c,d)

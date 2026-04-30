@@ -339,8 +339,11 @@ class Minifier {
             case 'ReturnStatement':
                 if (stmt.arguments.length) {
                     let r = 'return'
-                    for (const arg of stmt.arguments) {
-                        r = joinStatements(r, this.walkExpression(arg))
+                    for (let i = 0; i < stmt.arguments.length; i++) {
+                        r = joinStatements(r, this.walkExpression(stmt.arguments[i]))
+                        if (i < stmt.arguments.length - 1) {
+                            r += ','
+                        }
                     }
                     return r
                 }
@@ -357,10 +360,11 @@ class Minifier {
 
             case 'FunctionDeclaration':
                 this.enterFunction()
+                const outerScope = this.currentScope()
                 this.enterScope()
                 const prefix = stmt.isLocal ? 'local ' : ''
                 const funcName = stmt.isLocal
-                    ? this.currentScope().getLocalName(stmt.identifier.name, true)
+                    ? outerScope.getLocalName(stmt.identifier.name, true)
                     : this.walkExpression(stmt.identifier)
                 const params: string[] = []
                 for (const p of stmt.parameters) {
