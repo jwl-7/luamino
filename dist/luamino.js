@@ -4,6 +4,12 @@
 // ===============
 import * as luaparse from 'luaparse';
 import * as fs from 'fs';
+// identifier generation (base-62, first char cannot be digit)
+const LETTERS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const DIGITS = '0123456789';
+const ALL_CHARS = LETTERS + DIGITS;
+const ALL_CHARS_LIST = ALL_CHARS.split('');
+const LETTERS_LIST = LETTERS.split('');
 // reserved keywords
 const KEYWORDS = {
     'and': 1,
@@ -86,11 +92,6 @@ const PRECEDENCE = {
     'unary-': 8,
     '^': 10
 };
-// identifier generation (base-62, first char cannot be digit)
-const FIRST_CHARS = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const OTHER_CHARS = FIRST_CHARS + '0123456789';
-const FIRST_LIST = FIRST_CHARS.split('');
-const OTHER_LIST = OTHER_CHARS.split('');
 function generateShortId() {
     let counter = 1;
     let length = 1;
@@ -98,14 +99,18 @@ function generateShortId() {
         while (true) {
             let result = '';
             let temp = counter;
-            for (let i = 0; i < length; i++) {
-                const list = i === 0 ? FIRST_LIST : OTHER_LIST;
-                const idx = temp % list.length;
-                result = list[idx === 0 ? list.length - 1 : idx - 1] + result;
-                temp = Math.floor((temp - 1) / list.length);
+            // First character (i=0) always from LETTERS_LIST (letters only)
+            let idx = (temp - 1) % LETTERS_LIST.length;
+            result = LETTERS_LIST[idx] ?? '';
+            temp = Math.floor((temp - 1) / LETTERS_LIST.length);
+            // Remaining characters (i=1 to length-1) from ALL_CHARS_LIST (letters + digits)
+            for (let i = 1; i < length; i++) {
+                idx = temp % ALL_CHARS_LIST.length;
+                result = ALL_CHARS_LIST[idx] + result;
+                temp = Math.floor(temp / ALL_CHARS_LIST.length);
             }
             counter++;
-            if (counter > Math.pow(OTHER_LIST.length, length)) {
+            if (counter > Math.pow(ALL_CHARS_LIST.length, length - 1) * LETTERS_LIST.length) {
                 counter = 1;
                 length++;
             }
