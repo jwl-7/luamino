@@ -538,7 +538,7 @@ if (args.includes('-c')) {
 }
 
 try {
-    console.log(minify(code))
+    process.stdout.write(minify(code))
 } catch (err) {
     console.error('minification error:', (err as Error).message)
     process.exit(1)

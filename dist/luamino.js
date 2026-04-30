@@ -488,7 +488,7 @@ else {
     process.exit(1);
 }
 try {
-    console.log(minify(code));
+    process.stdout.write(minify(code));
 }
 catch (err) {
     console.error('minification error:', err.message);

@@ -1,1 +1,1 @@
-local function a()local b=0;return function()b=b+1;return b end end;local c=a();print(c());print(c())
+local function a()local b=0;return function()b=b+1;return b end end;local a=makeCounter();print(a());print(a())

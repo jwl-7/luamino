@@ -1,1 +1,1 @@
-local a=bit.bor;local b=bit.band;function c(...)local d={...};return#d end;local e=a(1,4,8);print(e);print(c(10,20,30))
+local a=bit.a;local b=bit.b;function variadic(...)local c={...};return#c end;local c=a(1,4,8);print(c);print(variadic(10,20,30))
