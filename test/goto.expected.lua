@@ -1,1 +1,1 @@
-local a=0;::start::;a=a+1;print(a);if a<3 then goto start end
+local a=0;::b::;a=a+1;print(a);if a<3 then goto b end
