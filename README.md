@@ -8,10 +8,10 @@ TS LUA minifier
 ## 🎭 Features
 - One-line output
 - Removes comments and whitespace
-- Renames local variables to short names
-- Preserves global variable names
-- Preserves operator precedence with minimal parentheses
-- Supports Lua/LuaJIT 5.1+
+- Renames local variables to short names (light obfuscation)
+- Preserves global variables (does not rename)
+- Preserves operator precedence (minimal parentheses)
+- Supports Lua/LuaJIT syntax (parses in LuaJIT mode)
 
 ## 📜 Example
 

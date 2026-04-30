@@ -1,0 +1,4 @@
+_GLOBAL_SETTING = 100
+APP_CONFIG = { name = "test" }
+print(_GLOBAL_SETTING)
+print(APP_CONFIG.name)

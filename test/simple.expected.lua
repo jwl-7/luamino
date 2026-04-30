@@ -1,0 +1,1 @@
+local function a(b)local c=0;local d=0;for e,f in ipairs(b)do if type(f)=='number'then c=c+f;d=d+1 end end;if d==0 then return nil end;return c/d end;local a={85,92,78,'invalid',88};local b=calculateAverage(a);print("Average: "..b)

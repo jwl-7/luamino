@@ -1,0 +1,1 @@
+local a=bit.bor;local b=bit.band;function c(...)local d={...};return#d end;local e=a(1,4,8);print(e);print(c(10,20,30))

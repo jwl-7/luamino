@@ -482,7 +482,7 @@ class Minifier {
 // entry point: parse and minify
 function minify(input: string | AST): string {
     const ast = typeof input === 'string'
-        ? luaparse.parse(input, { comments: false, scope: true }) as unknown as AST
+        ? luaparse.parse(input, { comments: false, scope: true, luaVersion: 'LuaJIT' }) as unknown as AST
         : input as AST
     if (!ast.globals) {
         throw new Error('AST missing globals. Use luaparse with scope: true')

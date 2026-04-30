@@ -1,0 +1,3 @@
+local a={key1="value1",key2=42,[1+2]="computed"};for b,c in pairs(a)do print(b,c)end;local d=[[multi
+line
+string]]

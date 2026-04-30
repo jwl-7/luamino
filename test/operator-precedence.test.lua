@@ -1,0 +1,5 @@
+local a = 1 + 2 * 3
+local b = (1 + 2) * 3
+local c = 2 ^ 3 ^ 2
+local d = -5 ^ 2
+print(a, b, c, d)
