@@ -444,7 +444,7 @@ class Minifier {
                 return this.formatBase(expr.base) + '[' + this.walkExpression(expr.index) + ']'
 
             case 'MemberExpression':
-                return this.formatBase(expr.base) + expr.indexer + this.walkExpression(expr.identifier)
+                return this.formatBase(expr.base) + expr.indexer + expr.identifier.name
 
             case 'FunctionDeclaration':
                 this.enterScope()
