@@ -160,6 +160,11 @@ local d = -5 ^ 2           -- unary precedence: -(5^2) = -25
 
 print(a, b, c, d)
 
+-- string parens index
+local function string_parens()
+    return ('')[1e-1 > 1e9]
+end
+
 -- Table with computed key expressions
 local computed = {
     ["key" .. 1] = "value1",

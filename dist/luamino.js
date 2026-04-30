@@ -238,10 +238,12 @@ class Minifier {
         return newName;
     }
     formatBase(base) {
-        const needsParens = base.inParens &&
-            base.type !== 'Identifier' && base.type !== 'IndexExpression' &&
-            base.type !== 'MemberExpression' && base.type !== 'CallExpression' &&
-            base.type !== 'TableCallExpression' && base.type !== 'StringCallExpression';
+        const needsParens = (base.type === 'StringLiteral' ||
+            base.type === 'CallExpression' ||
+            base.type === 'BinaryExpression' ||
+            base.type === 'FunctionDeclaration' ||
+            base.type === 'TableConstructorExpression' ||
+            base.type === 'LogicalExpression');
         let result = needsParens ? '(' : '';
         result += this.walkExpression(base);
         if (needsParens)

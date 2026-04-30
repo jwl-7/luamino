@@ -1,0 +1,1 @@
+local function a()return('')[1e-1>1e9]end
