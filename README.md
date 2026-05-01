@@ -1,4 +1,4 @@
-<img width="356" alt="luamino-banner" src="https://github.com/user-attachments/assets/b9a2a315-a26c-485f-9c6c-623a3906d09f" />
+<img width="312" alt="Untitled" src="https://github.com/user-attachments/assets/9d3c1f36-36d9-4cb3-9dfd-bef05cac2bcf" />
 
 # 🐉 luamino
 TS LUA minifier
